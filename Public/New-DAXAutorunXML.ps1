@@ -82,5 +82,4 @@ function New-DAXAutorunXML {
         return $XMLFile.FullName
     }
 }
-New-DAXAutorunXML -AutorunAction CIL -Path C:\_Backup_Alte_Festplatten\
-#Export-ModuleMember -Function New-DAXAutorunXML
+Export-ModuleMember -Function New-DAXAutorunXML
