@@ -4,7 +4,8 @@ This module is for all my fellow Microsoft Dynamics AX 2012 R3 admins. I know yo
 ## Introduction
 DAXTools is a PowerShell module for administration and automation of my favorite legacy software, Microsoft Dynamics AX 2012 R3.
 I am currently in the process of refurbishing all the PowerShell scripts I've written out of frustration over DAX2012R3s poor automation capabilities.
-If you're tired of doing the same old administrative tasks in your or your customers Dynamics AX 2012 environments, this module might be for you.
+If you're tired of doing the same old administrative tasks in your or your customers Dynamics AX 2012 environments and you want Task Scheduler and his friends in the Azure / D365 cosmos to do the job for you? 
+This module might be for you.
 
 ## Instructions
 
