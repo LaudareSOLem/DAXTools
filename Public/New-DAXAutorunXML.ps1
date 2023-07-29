@@ -40,13 +40,13 @@ function New-DAXAutorunXML {
     begin {
 
         $basedir = $env:programdata + '\DAXTools'
-        $workdir = $basedir + '\workdir'
+        $workdir = $env:Basedir + '\workdir'
         $XPO = "C:\temp\dummy.xpo"
         $XMLName = 'DAXTools_autorun.xml'
         $Line1Base = '<AxaptaAutoRun exitWhenDone="true" version="6.0" logFile="'
         $Line3 = '</AxaptaAutoRun>'
         $Timestamp = Get-Date -Format yyyy.MM.dd_HH.mm.ss
-        if (!(Test-Path $workdir)) { new-item -Itemtype Directory -Path $basedir -Name "workdir" -force }
+        if (!(Test-Path $workdir)) { new-item -Itemtype Directory -Path $env:Basedir -Name "workdir" -force }
 
     }    
 
