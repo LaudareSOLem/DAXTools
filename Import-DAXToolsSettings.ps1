@@ -1,5 +1,5 @@
 $XMLFile = $PSScriptRoot + '\XML\DAXTools.xml'
 $xml= [XML] (Get-Content $XMLFile)
-$xml
-$env:Basedir = ($xml.DAXTools.BaseSettings.Basedir)
+$env:basedir = ($xml.DAXTools.BaseSettings.basedir)
 $env:DynMgmtUtils = ($xml.DAXTools.BaseSettings.DynMgmtUtils)
+$env:workdir = ($xml.DAXTools.BaseSettings.workdir)
