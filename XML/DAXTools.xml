@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PSModuleConfig>
+	<Parameters>
+		<basedir>$env:programdata</basedir>
+        <DMUps1>'C:\Program Files\Microsoft Dynamics AX\60\ManagementUtilities\Microsoft.Dynamics.ManagementUtilities.ps1'</DMUps1>
+	</Parameters>
+</PSModuleConfig>
