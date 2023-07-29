@@ -43,6 +43,7 @@ function New-DAXAutorunXML {
         $workdir = $basedir + '\workdir'
         $XPO = "C:\temp\dummy.xpo"
         $XMLName = 'DAXTools_autorun.xml'
+        $Line1Base = '<AxaptaAutoRun exitWhenDone="true" version="6.0" logFile="'
         $Line3 = '</AxaptaAutoRun>'
         $Timestamp = Get-Date -Format yyyy.MM.dd_HH.mm.ss
         if (!(Test-Path $workdir)) { new-item -Itemtype Directory -Path $basedir -Name "workdir" -force }
@@ -54,14 +55,14 @@ function New-DAXAutorunXML {
         switch ($AutorunAction) {
 
             CIL {
-                $Line1 = '<AxaptaAutoRun exitWhenDone="true" version="6.0" logFile="' + $workdir + "\DAXTools_Autorun_CIL_" + $Timestamp + ".log" + '">'
+                $Line1 = $Line1Base + $workdir + "\DAXTools_Autorun_CIL_" + $Timestamp + ".log" + '">'
                 $LineCIL = '    <compileil/>'
                 $XMLFile = New-Item -Path $workdir -Name $XMLName -ItemType File -Force
                 Add-Content $XMLFile.FullName -Value $Line1, $LineCIL, $Line3
             }
 
             FullDBSync {
-                $Line1 = '<AxaptaAutoRun exitWhenDone="true" version="6.0" logFile="' + $workdir + "\DAXTools_Autorun_FullDBSync_" + $Timestamp + ".log" + '">'
+                $Line1 = $Line1Base + $workdir + "\DAXTools_Autorun_FullDBSync_" + $Timestamp + ".log" + '">'
                 $LineSync = '    <Synchronize/>'
                 $XMLFile = New-Item -Path $workdir -Name $XMLName -ItemType File -Force
                 Add-Content $XMLFile.FullName -Value $Line1, $LineSync, $Line3
@@ -81,5 +82,5 @@ function New-DAXAutorunXML {
         return $XMLFile.FullName
     }
 }
-
-Export-ModuleMember -Function New-DAXAutorunXML
+New-DAXAutorunXML -AutorunAction CIL -Path C:\_Backup_Alte_Festplatten\
+#Export-ModuleMember -Function New-DAXAutorunXML
