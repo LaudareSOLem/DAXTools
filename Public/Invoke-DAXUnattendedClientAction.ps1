@@ -15,8 +15,13 @@ function Invoke-DAXUnattendedClientAction {
         
     .Example
         PS C:\> Invoke-DAXUnattendedClientAction -AutorunXML C:\folder\autorun.xml
+        This command will start AX32.exe in silent mode and perform the action defined in the provided autorun.xml. AX32.exe will terminate after the compilation is finished and write all output to the logfile defined in autorun.xml
     .Example
-        PS C:\> New-DAXAutorunXML | Invoke-DAXUnattendedClientAction
+        PS C:\> New-DAXAutorunXML -AutorunAction CIL | Invoke-DAXUnattendedClientAction
+        This command will run a full CIL compilation in silent mode and terminate AX32.exe after its finished.
+
+    .Link
+        For more information, visit https://github.com/LaudareSOLem/DAXTools/wiki/Command-index#invoke-daxunattendedclientaction
 #>
 
 
