@@ -11,4 +11,4 @@ Have Task Scheduler and his friends in the Azure / D365 cosmos do the job while 
 
 1. Download and put in an appropriate PS module path
 2. RTFM
-3. Jolly automation \[T]/
+3. Jolly automation \\[T]/
