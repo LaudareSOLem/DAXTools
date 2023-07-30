@@ -35,7 +35,7 @@ function New-DAXAutorunXML {
         [Parameter(Mandatory = $false)]
         [string]$XPO
 
-    )
+        )
     
     begin {
 
@@ -46,7 +46,7 @@ function New-DAXAutorunXML {
         $Line1Base = '<AxaptaAutoRun exitWhenDone="true" version="6.0" logFile="'
         $Line3 = '</AxaptaAutoRun>'
         $Timestamp = Get-Date -Format yyyy.MM.dd_HH.mm.ss
-        if (!(Test-Path $workdir)) { new-item -Itemtype Directory -Path $env:Basedir -Name "workdir" -force }
+        if (!(Test-Path $workdir)) { New-Item -Itemtype Directory -Path $env:Basedir -Name "workdir" -force }
 
     }    
 
@@ -82,4 +82,6 @@ function New-DAXAutorunXML {
         return $XMLFile.FullName
     }
 }
-Export-ModuleMember -Function New-DAXAutorunXML
+#Export-ModuleMember -Function New-DAXAutorunXML
+
+New-DAXAutorunXML -AutorunAction FullDBSync -Path C:\Users\sveno\Downloads\autorun.xml
