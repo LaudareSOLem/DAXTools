@@ -1,17 +1,22 @@
 function Invoke-DAXUnattendedClientAction {
     <#
     .SYNOPSIS
+        Runs a client action defined in an autorun XML file passed to this function.
 
     .DESCRIPTION
+        Runs a client action defined in an autorun XML file passed to this function. Accepts pipeline values as XML input. Try using it with New-DAXAutorunXML!
 
-    .PARAMETER 
+    .PARAMETER AutorunXML
+        Duh
 
     .NOTES
         Tags: 
         Author: Sven Ontl
         
     .Example
-        PS C:\> Invoke-DAXUnattendedClientAction
+        PS C:\> Invoke-DAXUnattendedClientAction -AutorunXML C:\folder\autorun.xml
+    .Example
+        PS C:\> New-DAXAutorunXML | Invoke-DAXUnattendedClientAction
 #>
 
 
@@ -22,20 +27,19 @@ function Invoke-DAXUnattendedClientAction {
         [string]$AutorunXML
     )
 
-    begin{
-        #$AutorunXMLContent = $xml= [XML] (Get-Content $AutorunXML)
+    begin {
         $AutorunAction = ((Get-Content $AutorunXML | Select-Object -Index 1).TrimStart("'    <")).TrimEnd("/>")
 
     }
 
-    process{
+    process {
         switch ($AutorunAction) {
-            Synchronize { Write-Host "This is a snyc xml"  }
-            Default { Write-Error "This is not an AX32.exe autorun xml"}
+            Synchronize { Write-Host "This is a snyc xml" }
+            Default { Write-Error "This is not an AX32.exe autorun xml" }
         }
     }
 
-    end{
+    end {
 
     }
 
