@@ -48,13 +48,11 @@ function New-DAXAutorunXML {
         $XMLLine2Sync = '    <Synchronize/>'
         $XMLLine2XPO = '    <XpoImport file="' + $XPO + '" />'
         $XMLLine3XPO = '    <Run type="class" name="CreateClass" method="main" />'
-        $XMLLine2Test = '    <Test/>'
         $XMLLineEnd = '</AxaptaAutoRun>'
                 
         if (!(Test-Path $workdir)) { New-Item -Itemtype Directory -Path $env:Basedir -Name "workdir" -force }
 
     }    
-
     process {
 
         switch ($AutorunAction) {
@@ -66,8 +64,6 @@ function New-DAXAutorunXML {
                     $XMLLineEnd
                 )
                 
-                $XMLFile = New-Item -Path $workdir -Name $XMLName -ItemType File -Force
-                Add-Content $XMLFile.FullName -Value $XMLcontent
             }
 
             FullDBSync {
@@ -76,9 +72,6 @@ function New-DAXAutorunXML {
                     $XMLLine2Sync,
                     $XMLLineEnd
                 )
-                
-                $XMLFile = New-Item -Path $workdir -Name $XMLName -ItemType File -Force
-                Add-Content $XMLFile.FullName -Value $XMLcontent
             }
 
             ImportXPO {
@@ -93,25 +86,13 @@ function New-DAXAutorunXML {
                     $XMLLine3XPO,
                     $XMLLineEnd
                 )
-                $XMLFile = New-Item -Path $workdir -Name $XMLName -ItemType File -Force
-                Add-Content $XMLFile.FullName -Value $XMLcontent
-            }
-
-            Test {                              
-                $XMLcontent = @(
-                    $XMLLine1,
-                    $XMLLine2Test,
-                    $XMLLineEnd
-                )
-
-                $XMLFile = New-Item -Path $workdir -Name $XMLName -ItemType File -Force
-                Add-Content $XMLFile.FullName -Value $XMLcontent
             }
         }
     }
-
     end {
 
+        $XMLFile = New-Item -Path $workdir -Name $XMLName -ItemType File -Force
+        Add-Content $XMLFile.FullName -Value $XMLcontent
         if (Test-Path $XMLFile) {
             return $XMLFile.FullName
         }
