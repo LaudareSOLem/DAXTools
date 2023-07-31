@@ -5,7 +5,7 @@ function New-DAXAutorunXML {
         Creates autorun.xml files for unattended client actions with ax32.exe
 
     .DESCRIPTION
-        Creates autorun.xml files for unattended client actions with ax32.exe. The client action log file defined in the XML will be set to this modules workdir as defined in XML/DAXTools.xml. Returns the created XML files FullName.
+        Creates autorun.xml files for unattended client actions with ax32.exe. The client actions log file inside the XML will be set to this modules workdir as defined in XML/DAXTools.xml. Returns the created XML files FullName.
     
     .PARAMETER AutorunAction
         The type of desired autorun action. Accepts 'CIL', 'FullDBSync' and 'ImportXPO'.
@@ -14,7 +14,7 @@ function New-DAXAutorunXML {
         Target path for the created XML files. If not specified, it will be written to this modules workdir as defined in XML/DAXTools.xml
 
     .PARAMETER XPO
-        Path to an XPO to import
+        FullName of the XPO to import
 
     .NOTES
         Tags: CIL, Autorun, XML
@@ -31,7 +31,6 @@ function New-DAXAutorunXML {
         [Parameter(Mandatory = $true)]
         [ValidateSet('CIL', 'FullDBSync', 'ImportXPO', 'Test')]
         [string]$AutorunAction,
-
         [Parameter(Mandatory = $false)]
         [string]$Path,
         [Parameter(Mandatory = $false)]
