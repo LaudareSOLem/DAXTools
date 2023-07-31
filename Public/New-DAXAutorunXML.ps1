@@ -1,51 +1,57 @@
+
 function New-DAXAutorunXML {
     <#
     .SYNOPSIS
         Creates autorun.xml files for unattended client actions with ax32.exe
 
     .DESCRIPTION
-        Creates autorun.xml files for unattended client actions with ax32.exe. The client action log file defined in the XML will be located in the defined workdir. Returns the created XML file.
+        Creates autorun.xml files for unattended client actions with ax32.exe. The client action log file defined in the XML will be set to this modules workdir as defined in XML/DAXTools.xml. Returns the created XML files FullName.
     
     .PARAMETER AutorunAction
         The type of desired autorun action. Accepts 'CIL', 'FullDBSync' and 'ImportXPO'.
 
     .PARAMETER Path
-        Target path for the created XML files. If not specified, it will be written to this modules workdir as defined in the 'begin' block of New-DAXAutorunXML.ps1
+        Target path for the created XML files. If not specified, it will be written to this modules workdir as defined in XML/DAXTools.xml
 
     .PARAMETER XPO
         Path to an XPO to import
-
 
     .NOTES
         Tags: CIL, Autorun, XML
 
     .Example
         PS C:\> New-DAXAutorunXML -AutorunAction CIL -Path c:\XMLFiles
+
+    .Link
+        For more information, visit https://github.com/LaudareSOLem/DAXTools/wiki/Command-index
 #>
 
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [ValidateSet('CIL', 'FullDBSync', 'ImportXPO')]
+        [ValidateSet('CIL', 'FullDBSync', 'ImportXPO', 'Test')]
         [string]$AutorunAction,
 
         [Parameter(Mandatory = $false)]
         [string]$Path,
-
         [Parameter(Mandatory = $false)]
         [string]$XPO
 
-        )
+    )
     
     begin {
 
-        $basedir = $env:programdata + '\DAXTools'
-        $workdir = $env:Basedir + '\workdir'
-        $XPO = "C:\temp\dummy.xpo"
-        $XMLName = 'DAXTools_autorun.xml'
-        $Line1Base = '<AxaptaAutoRun exitWhenDone="true" version="6.0" logFile="'
-        $Line3 = '</AxaptaAutoRun>'
+        $workdir = $env:Basedir + 'workdir'
+        $XMLName = 'DAXTools_AX32autorun_' + $AutorunAction + '.xml'
         $Timestamp = Get-Date -Format yyyy.MM.dd_HH.mm.ss
+        $XMLLine1 = '<AxaptaAutoRun exitWhenDone="true" version="6.0" logFile="' + $workdir + "\DAXTools_" + $AutorunAction + '_' + $Timestamp + ".log" + '">'    
+        $XMLLine2CIL = '    <compileil/>'
+        $XMLLine2Sync = '    <Synchronize/>'
+        $XMLLine2XPO = '    <XpoImport file="' + $XPO + '" />'
+        $XMLLine3XPO = '    <Run type="class" name="CreateClass" method="main" />'
+        $XMLLine2Test = '    <Test/>'
+        $XMLLineEnd = '</AxaptaAutoRun>'
+                
         if (!(Test-Path $workdir)) { New-Item -Itemtype Directory -Path $env:Basedir -Name "workdir" -force }
 
     }    
@@ -54,34 +60,69 @@ function New-DAXAutorunXML {
 
         switch ($AutorunAction) {
 
-            CIL {
-                $Line1 = $Line1Base + $workdir + "\DAXTools_Autorun_CIL_" + $Timestamp + ".log" + '">'
-                $LineCIL = '    <compileil/>'
+            CIL {               
+                $XMLcontent = @(
+                    $XMLLine1,
+                    $XMLLine2CIL,
+                    $XMLLineEnd
+                )
+                
                 $XMLFile = New-Item -Path $workdir -Name $XMLName -ItemType File -Force
-                Add-Content $XMLFile.FullName -Value $Line1, $LineCIL, $Line3
+                Add-Content $XMLFile.FullName -Value $XMLcontent
             }
 
             FullDBSync {
-                $Line1 = $Line1Base + $workdir + "\DAXTools_Autorun_FullDBSync_" + $Timestamp + ".log" + '">'
-                $LineSync = '    <Synchronize/>'
+                $XMLcontent = @(
+                    $XMLLine1,
+                    $XMLLine2Sync,
+                    $XMLLineEnd
+                )
+                
                 $XMLFile = New-Item -Path $workdir -Name $XMLName -ItemType File -Force
-                Add-Content $XMLFile.FullName -Value $Line1, $LineSync, $Line3
+                Add-Content $XMLFile.FullName -Value $XMLcontent
             }
 
             ImportXPO {
-                $Line1 = '<ComingSoon>'
-                $LineXPO = '    <Ipromise/>'
-                $Line3XPO = '</ComingSoon>'
+                if (!($XPO)) {
+                    Write-Error "Please provide an XPO file" -Category SyntaxError
+                    return $false
+                }
+
+                $XMLcontent = @(
+                    $XMLLine1,
+                    $XMLLine2XPO,
+                    $XMLLine3XPO,
+                    $XMLLineEnd
+                )
                 $XMLFile = New-Item -Path $workdir -Name $XMLName -ItemType File -Force
-                Add-Content $XMLFile.FullName -Value $Line1, $LineXPO, $Line3XPO
+                Add-Content $XMLFile.FullName -Value $XMLcontent
+            }
+
+            Test {                              
+                $XMLcontent = @(
+                    $XMLLine1,
+                    $XMLLine2Test,
+                    $XMLLineEnd
+                )
+
+                $XMLFile = New-Item -Path $workdir -Name $XMLName -ItemType File -Force
+                Add-Content $XMLFile.FullName -Value $XMLcontent
             }
         }
     }
 
     end {
-        return $XMLFile.FullName
+
+        if (Test-Path $XMLFile) {
+            return $XMLFile.FullName
+        }
+        else {
+            Write-Error "Something went wrong." -Category NotSpecified
+            return $false
+        }
     }
 }
 #Export-ModuleMember -Function New-DAXAutorunXML
 
-New-DAXAutorunXML -AutorunAction FullDBSync -Path C:\Users\sveno\Downloads\autorun.xml
+New-DAXAutorunXML -AutorunAction CIL
+
