@@ -40,7 +40,10 @@ function Invoke-DAXUnattendedClientAction {
     process {
         switch ($AutorunAction) {
             Synchronize { Write-Host "This is a snyc xml" }
-            Default { Write-Error "This is not an AX32.exe autorun xml" }
+            compileil   { Write-Host "This is a CIL compilation XML" }
+            XpoImport   { Write-Host "This is an XPO import xml"}
+            Test        { Write-Host "This is a test xml"}
+            Default     { Write-Error "This is not an AX32.exe autorun xml" }
         }
     }
 
@@ -50,4 +53,4 @@ function Invoke-DAXUnattendedClientAction {
 
 }
 
-Invoke-DAXUnattendedClientAction -AutorunXML C:\ProgramData\DAXTools\workdir\DAXTools_autorun.xml
+Invoke-DAXUnattendedClientAction -AutorunXML C:\ProgramData\DAXTools\workdir\DAXTools_AX32autorun.xml
