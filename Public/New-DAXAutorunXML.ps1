@@ -82,8 +82,8 @@ function New-DAXAutorunXML {
             }
 
             ImportXPO {
-                if (!($XPO)) {
-                    Write-Error "Please provide an XPO file" -Category SyntaxError
+                if (!(Test-Path $XPO)) {
+                    Write-Error "XPO file not found" -Category ObjectNotFound
                     return $false
                 }
 
@@ -121,7 +121,5 @@ function New-DAXAutorunXML {
         }
     }
 }
-#Export-ModuleMember -Function New-DAXAutorunXML
 
-New-DAXAutorunXML -AutorunAction CIL
-
+Export-ModuleMember -Function New-DAXAutorunXML
