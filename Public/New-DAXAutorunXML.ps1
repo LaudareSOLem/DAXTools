@@ -62,8 +62,7 @@ function New-DAXAutorunXML {
                     $XMLLine1,
                     $XMLLine2CIL,
                     $XMLLineEnd
-                )
-                
+                )     
             }
 
             FullDBSync {
